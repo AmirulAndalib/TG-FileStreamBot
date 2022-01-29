@@ -21,10 +21,7 @@ def detect_type(m: Message):
 
 @StreamBot.on_message(filters.private & (filters.document | filters.video | filters.audio), group=4)
 async def media_receive_handler(_, m: Message):
-    file = detect_type(m)
-    file_name = ''
-    if file:
-        file_name = file.file_name
+    file_name = file.file_name if (file := detect_type(m)) else ''
     log_msg = await m.forward(chat_id=Var.BIN_CHANNEL)
     stream_link = f"{Var.URL}{log_msg.message_id}"
     if file_name:
